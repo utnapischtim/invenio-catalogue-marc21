@@ -17,7 +17,7 @@ from .models import Marc21CatalogueTasksMetadata
 from .systemfields import CatalogueCheckField
 
 
-class Marc21CatalogueDraft(Marc21Draft):
+class Marc21CatalogueDraft(Marc21Draft):  # type: ignore[misc]
     """Marc21 catalogue draft API."""
 
     schema = ConstantField(
@@ -32,7 +32,7 @@ class Marc21CatalogueDraft(Marc21Draft):
     is_catalogue = CatalogueCheckField(dump=True, value="marc21-catalogue")
 
 
-class Marc21CatalogueRecord(Marc21Record):
+class Marc21CatalogueRecord(Marc21Record):  # type: ignore[misc]
     """Marc21 catalogue API."""
 
     schema = ConstantField(

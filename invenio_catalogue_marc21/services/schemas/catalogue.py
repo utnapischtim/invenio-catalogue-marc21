@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2024-2025 Graz University of Technology.
+# Copyright (C) 2024-2026 Graz University of Technology.
 #
 # invenio-catalogue-marc21 is free software; you can redistribute it and/or
 # modify it under the terms of the MIT License; see LICENSE file for more
@@ -22,7 +22,7 @@ class CatalogueSchema(Schema):
     children = List(Str())
 
 
-class Marc21CatalogueSchema(Marc21RecordSchema):
+class Marc21CatalogueSchema(Marc21RecordSchema):  # type: ignore[misc]
     """Marc21CatalogueSchema."""
 
     catalogue = NestedAttribute(CatalogueSchema)

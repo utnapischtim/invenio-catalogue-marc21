@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2024-2025 Graz University of Technology.
+# Copyright (C) 2024-2026 Graz University of Technology.
 #
 # invenio-catalogue-marc21 is free software; you can redistribute it and/or
 # modify it under the terms of the MIT License; see LICENSE file for more
@@ -22,7 +22,7 @@ from .links import DefaultServiceLinks
 from .schemas import Marc21CatalogueSchema
 
 
-class Marc21CatalogueServiceConfig(Marc21RecordServiceConfig):
+class Marc21CatalogueServiceConfig(Marc21RecordServiceConfig):  # type: ignore[misc]
     """Marc21 record service config."""
 
     record_cls = Marc21CatalogueRecord

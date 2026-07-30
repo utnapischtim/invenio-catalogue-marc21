@@ -25,7 +25,7 @@ class T:
         return {}
 
 
-class Marc21CatalogueService(Marc21RecordService):
+class Marc21CatalogueService(Marc21RecordService):  # type: ignore[misc]
     """Marc21 record service class."""
 
     def add(self, identity: Identity, data: dict) -> RecordItem:
@@ -44,7 +44,7 @@ class Marc21CatalogueService(Marc21RecordService):
         QUESTION:
         should the add be safeguarded by a permission system?
         """
-        return super().create(identity=identity, data=data)
+        return super().create(identity=identity, data=data)  # type: ignore[no-any-return]
 
 
 class Marc21CatalogueTasksService(Service):
@@ -52,14 +52,13 @@ class Marc21CatalogueTasksService(Service):
 
     def progress(self, identity: Identity, pid: str) -> None:
         """Progress."""
-        print(f"Marc21CatalogueTasksService.progress pid: {pid}, identity: {identity}")
         # use db directly, no indexing necessary
         # - get from table marc21_catalogue_tasks by pid, all lines
         # - return result
 
     def start(
         self,
-        identity: Identity,
+        identity: Identity,  # noqa: ARG002
         pid: str,
         task: str,
         params: dict[str, str],

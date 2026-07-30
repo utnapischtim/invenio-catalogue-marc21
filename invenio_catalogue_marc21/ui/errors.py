@@ -22,14 +22,14 @@ def not_found_error(*_: tuple, **__: dict) -> tuple[str, int]:
     return render_template(current_app.config["THEME_404_TEMPLATE"]), 404
 
 
-def record_tombstone_error(**__: dict) -> tuple[str, int]:
+def record_tombstone_error(*_: tuple, **__: dict) -> tuple[str, int]:
     """Tombstone page."""
     return render_template("invenio_records_marc21/tombstone.html"), 410
 
 
-def record_permission_denied_error(**__: dict) -> tuple[str, int]:
+def record_permission_denied_error(*_: tuple, **__: dict) -> tuple[str, int]:
     """Handle permission denier error on record views."""
     if not current_user.is_authenticated:
         # trigger the flask-login unauthorized handler
-        return current_app.login_manager.unauthorized()
+        return current_app.login_manager.unauthorized()  # type: ignore[attr-defined,no-any-return]
     return render_template(current_app.config["THEME_403_TEMPLATE"]), 403

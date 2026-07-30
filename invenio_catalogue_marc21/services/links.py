@@ -10,6 +10,8 @@
 
 """Marc21 Record Service links."""
 
+from collections.abc import Callable
+
 from invenio_drafts_resources.services.records.config import is_draft, is_record
 from invenio_records_marc21.services.links import record_doi_link
 from invenio_records_resources.records import Record
@@ -20,7 +22,12 @@ from invenio_records_resources.services.records.links import RecordEndpointLink
 class SwitchLinks:
     """Switch link."""
 
-    def __init__(self, cond: list[tuple]) -> None:
+    def __init__(
+        self,
+        cond: list[
+            tuple[Callable[[Record, dict], bool], ConditionalLink | RecordEndpointLink]
+        ],
+    ) -> None:
         """Construct."""
         # conditions are a tuple of 1: is the condition and 2: the template
         self._conditions = cond

@@ -52,7 +52,7 @@ class Marc21CatalogueAlmaProxyResourceConfig(RecordResourceConfig):
     }
 
     # Request parsing
-    request_search_args = CatalogueSearchArgsSchema
+    request_search_args = CatalogueSearchArgsSchema  # type: ignore[assignment]
     request_args = SearchRequestArgsSchema
     request_view_args: dict = {
         "pid_value": Str(),
@@ -100,7 +100,7 @@ class Marc21CatalogueResourceConfig(RecordResourceConfig):
     }
 
     # Request parsing
-    request_search_args = CatalogueSearchArgsSchema
+    request_search_args = CatalogueSearchArgsSchema  # type: ignore[assignment]
     request_args = SearchRequestArgsSchema
     request_view_args: dict = {
         "pid_value": Str(),

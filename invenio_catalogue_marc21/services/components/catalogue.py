@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2024-2025 Graz University of Technology.
+# Copyright (C) 2024-2026 Graz University of Technology.
 #
 # invenio-catalogue-marc21 is free software; you can redistribute it and/or
 # modify it under the terms of the MIT License; see LICENSE file for more
@@ -8,13 +8,20 @@
 
 """Catalogue service component for ."""
 
+from typing import cast
+
 from flask_principal import Identity
-from invenio_drafts_resources.records import Draft
+from invenio_drafts_resources.services.records import RecordService
 from invenio_drafts_resources.services.records.components import ServiceComponent
-from invenio_records_resources.records import Record
+
+from ...records.api import Marc21CatalogueDraft, Marc21CatalogueRecord
 
 
-def update_parent(service: dict, record: Record, identity: Identity) -> None:
+def update_parent(
+    service: RecordService,
+    record: Marc21CatalogueDraft | Marc21CatalogueRecord,
+    identity: Identity,
+) -> None:
     """Update parent."""
     parent_id = record.catalogue["parent"]
     id_ = record["id"]
@@ -54,9 +61,9 @@ class CatalogueComponent(ServiceComponent):
 
     def create(  # type: ignore[override]
         self,
-        identity: Identity,  # noqa: ARG002
+        identity: Identity,
         data: dict,
-        record: Record,
+        record: Marc21CatalogueDraft | Marc21CatalogueRecord,
         errors: dict | None = None,  # noqa: ARG002
     ) -> None:
         """Create handler."""
@@ -65,29 +72,32 @@ class CatalogueComponent(ServiceComponent):
             "parent": record["id"],
             "children": [],
         }
+
         record.catalogue = data.get("catalogue", default_catalogue)
         record.children = data.get("children", [])
-        update_parent(self.service, record, identity)
+        update_parent(cast(RecordService, self.service), record, identity)
 
     def update_draft(  # type: ignore[override]
         self,
-        identity: Identity,  # noqa: ARG002
+        identity: Identity,
         data: dict,
-        record: Record,
+        record: Marc21CatalogueDraft | Marc21CatalogueRecord,
         errors: dict | None = None,  # noqa: ARG002
     ) -> None:
         """Update draft handler."""
         record.catalogue = data.get("catalogue", {})
         record.children = data.get("children", [])
-        update_parent(self.service, record, identity)
+        update_parent(cast(RecordService, self.service), record, identity)
 
     def edit(
         self,
         identity: Identity,  # noqa: ARG002
-        draft: Draft | None = None,
-        record: Record | None = None,
+        draft: Marc21CatalogueDraft | None = None,
+        record: Marc21CatalogueRecord | None = None,
     ) -> None:
         """Edit a record handler."""
+        if draft is None or record is None:
+            return
         # TODO: check how the schema gets into the draft, because it is not there
         draft.catalogue = record.catalogue
         draft.children = record.children
@@ -95,10 +105,12 @@ class CatalogueComponent(ServiceComponent):
 
     def publish(
         self,
-        identity: Identity,
-        draft: Draft = None,
-        record: Record = None,
+        identity: Identity,  # noqa: ARG002
+        draft: Marc21CatalogueDraft | None = None,
+        record: Marc21CatalogueRecord | None = None,
     ) -> None:
         """Publish handler."""
+        if draft is None or record is None:
+            return
         record.catalogue = draft.catalogue
         record.children = draft.children
