@@ -56,10 +56,10 @@ tests = [
 catalogue = "invenio_catalogue_marc21.cli:catalogue"
 
 [project.entry-points."invenio_base.apps"]
-invenio_catalogue_marc21 = "invenio_catalogue_marc21:InvenioCatalogueMarc21"
+invenio_catalogue_marc21 = "invenio_catalogue_marc21.ext:InvenioCatalogueMarc21"
 
 [project.entry-points."invenio_base.api_apps"]
-invenio_catalogue_marc21 = "invenio_catalogue_marc21:InvenioCatalogueMarc21"
+invenio_catalogue_marc21 = "invenio_catalogue_marc21.ext:InvenioCatalogueMarc21"
 
 [project.entry-points."invenio_base.finalize_app"]
 invenio_catalogue_marc21 = "invenio_catalogue_marc21.ext:finalize_app"

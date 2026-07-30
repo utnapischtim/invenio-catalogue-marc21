@@ -2,7 +2,7 @@
 #
 # This file is part of Invenio.
 #
-# Copyright (C) 2024-2025 Graz University of Technology.
+# Copyright (C) 2024-2026 Graz University of Technology.
 #
 # invenio-catalogue-marc21 is free software; you can redistribute it and/or
 # modify it under the terms of the MIT License; see LICENSE file for more
@@ -10,10 +10,19 @@
 
 """Helper proxy to the state object."""
 
+from typing import TYPE_CHECKING, cast
+
 from flask import current_app
 from werkzeug.local import LocalProxy
 
-current_catalogue_marc21 = LocalProxy(
-    lambda: current_app.extensions["invenio-catalogue-marc21"],
+if TYPE_CHECKING:
+    from .ext import InvenioCatalogueMarc21
+
+current_catalogue_marc21: InvenioCatalogueMarc21 = cast(
+    "InvenioCatalogueMarc21",
+    LocalProxy(
+        lambda: current_app.extensions["invenio-catalogue-marc21"],
+    ),
 )
+
 """Helper proxy to get the current records marc21 extension."""

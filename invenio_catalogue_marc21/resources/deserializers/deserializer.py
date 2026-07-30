@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2025 Graz University of Technology.
+# Copyright (C) 2025-2026 Graz University of Technology.
 #
 # invenio-catalogue-marc21 is free software; you can redistribute it and/or
 # modify it under the terms of the MIT License; see LICENSE file for more
@@ -21,9 +21,9 @@ class Marc21CatalogueDeserializer(JSONDeserializer):
         """Deserializer initialization."""
         self.schema = schema
 
-    def deserialize(self, data: dict) -> None:
+    def deserialize(self, data: str | bytes | bytearray | memoryview | None) -> None:
         """Deserialize."""
-        data = super().deserialize(data)
+        deserialized_data = super().deserialize(data)
 
         def _permission_check(*_: dict, **__: dict) -> bool:
             return True
@@ -33,6 +33,6 @@ class Marc21CatalogueDeserializer(JSONDeserializer):
         schema = self.schema()
 
         try:
-            return schema.load(data)
+            return schema.load(deserialized_data)
         finally:
             context_schema.reset(token)

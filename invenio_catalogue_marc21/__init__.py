@@ -8,8 +8,11 @@
 
 """Invenio module link multiple marc21 modules."""
 
-from .ext import InvenioCatalogueMarc21
+# from .ext import InvenioCatalogueMarc21
 
 __version__ = "0.2.0"
 
-__all__ = ("__version__", "InvenioCatalogueMarc21")
+__all__ = (
+    "__version__",
+    # "InvenioCatalogueMarc21",
+)

@@ -59,7 +59,7 @@ class Marc21CatalogueTasksService(Service):
 
     def start(
         self,
-        identity: Identity,
+        identity: Identity,  # noqa: ARG002
         pid: str,
         task: str,
         params: dict[str, str],

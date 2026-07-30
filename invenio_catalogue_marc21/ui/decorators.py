@@ -2,7 +2,7 @@
 #
 # This file is part of Invenio.
 #
-# Copyright (C) 2024-2025 Graz University of Technology.
+# Copyright (C) 2024-2026 Graz University of Technology.
 #
 # invenio-catalogue-marc21 is free software; you can redistribute it and/or
 # modify it under the terms of the MIT License; see LICENSE file for more
@@ -12,17 +12,30 @@
 
 from collections.abc import Callable
 from functools import wraps
+from typing import TypedDict, Unpack
 
 from flask import g
 from invenio_records_resources.services.errors import PermissionDeniedError
 from invenio_records_resources.services.files import FileService
-from invenio_records_resources.services.records import RecordService
+from invenio_records_resources.services.files.results import FileList
+from invenio_records_resources.services.records.results import RecordItem
 from sqlalchemy.exc import NoResultFound
 
 from ..proxies import current_catalogue_marc21
+from ..services import Marc21CatalogueService
 
 
-def _service() -> RecordService:
+class KWARGS(TypedDict):
+    """Typed dict for kwargs."""
+
+    is_preview: bool
+    pid_value: str
+    files: FileList | None
+    draft_files: FileList | None
+    record: RecordItem
+
+
+def _service() -> Marc21CatalogueService:
     """Get the record service."""
     return current_catalogue_marc21.records_service
 
@@ -58,7 +71,7 @@ def pass_draft_files[T](func: Callable[..., T]) -> Callable:
     """Decorate a view to pass a draft's files using the files service."""
 
     @wraps(func)
-    def view(**kwargs: dict) -> T:
+    def view(**kwargs: Unpack[KWARGS]) -> T:
         try:
             pid_value = kwargs.get("pid_value")
             files = _draft_files_service().list_files(
@@ -82,7 +95,7 @@ def pass_record_or_draft[T](f: Callable[..., T]) -> Callable:
     """Decorate to retrieve the record or draft using the record service."""
 
     @wraps(f)
-    def view(**kwargs: dict) -> T:
+    def view(**kwargs: Unpack[KWARGS]) -> T:
         pid_value = kwargs.get("pid_value")
         is_preview = kwargs.get("is_preview")
 
@@ -107,7 +120,7 @@ def pass_record_files[T](f: Callable[..., T]) -> Callable:
     """Decorate a view to pass a record's files using the files service."""
 
     @wraps(f)
-    def view(**kwargs: dict) -> T:
+    def view(**kwargs: Unpack[KWARGS]) -> T:
         is_preview = kwargs.get("is_preview")
         pid_value = kwargs.get("pid_value")
 

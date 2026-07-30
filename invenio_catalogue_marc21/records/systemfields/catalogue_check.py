@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2024-2025 Graz University of Technology.
+# Copyright (C) 2024-2026 Graz University of Technology.
 #
 # invenio-catalogue-marc21 is free software; you can redistribute it and/or
 # modify it under the terms of the MIT License; see LICENSE file for more
@@ -19,8 +19,18 @@ For instance:
 
 """
 
+from typing import TYPE_CHECKING, Any, Self, overload
+
 from invenio_records.dictutils import dict_lookup, dict_set, parse_lookup_key
 from invenio_records.systemfields import SystemField
+
+# this is not working at the moment, since there is a circular dependency flow
+# from ..api import Marc21CatalogueDraft, Marc21CatalogueRecord # noqa: ERA001
+# this is not working at runtime since SystemField is not subscriptable
+# class CatalogueCheckField(SystemField[Marc21CatalogueRecord | Marc21CatalogueDraft]):
+
+if TYPE_CHECKING:
+    from ..api import Marc21CatalogueDraft, Marc21CatalogueRecord
 
 
 class CatalogueCheckField(SystemField):
@@ -52,19 +62,42 @@ class CatalogueCheckField(SystemField):
     #
     # Data descriptor methods (i.e. attribute access)
     #
-    def __get__(self, record, owner=None):
+    @overload
+    def __get__(
+        self,
+        record: None,
+        owner: type[Marc21CatalogueRecord | Marc21CatalogueDraft] | None = None,
+    ) -> Self: ...
+
+    @overload
+    def __get__(
+        self,
+        record: Marc21CatalogueRecord | Marc21CatalogueDraft,
+        owner: type[Marc21CatalogueRecord | Marc21CatalogueDraft] | None = None,
+    ) -> bool: ...
+
+    def __get__(
+        self,
+        record: Marc21CatalogueRecord | Marc21CatalogueDraft | None,
+        owner: type[Marc21CatalogueRecord | Marc21CatalogueDraft] | None = None,
+    ) -> bool | Self:
         """Get the persistent identifier."""
         if record is None:
             return self  # returns the field itself.
         catalogue = getattr(record, self.key)
         return bool(catalogue)
 
-    def pre_dump(self, record, data: dict, **kwargs: dict):
+    def pre_dump(
+        self,
+        record: Marc21CatalogueRecord | Marc21CatalogueDraft,
+        data: dict[str, Any],
+        dumper: Any | None = None,
+    ) -> None:
         """Called before a record is dumped in a secondary storage system."""
         if self._dump:
             dict_set(data, self.attr_name, getattr(record, self.attr_name))
 
-    def pre_load(self, data: dict, **kwargs: dict):
+    def pre_load(self, data: dict[str, Any], loader: Any | None = None) -> None:
         """Called before a record is dumped in a secondary storage system."""
         if self._dump:
             keys = parse_lookup_key(self.attr_name)

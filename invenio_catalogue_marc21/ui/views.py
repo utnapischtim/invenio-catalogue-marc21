@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2024-2025 Graz University of Technology.
+# Copyright (C) 2024-2026 Graz University of Technology.
 #
 # invenio-catalogue-marc21 is free software; you can redistribute it and/or
 # modify it under the terms of the MIT License; see LICENSE file for more
 # details.
 
 """Invenio module link multiple marc21 modules."""
+
+from typing import cast
 
 from flask import current_app, g, render_template
 from flask_login import login_required
@@ -16,6 +18,7 @@ from invenio_records_resources.services.records.results import RecordItem
 from invenio_stats.proxies import current_stats
 
 from ..proxies import current_catalogue_marc21
+from ..records.api import Marc21CatalogueRecord
 from ..resources.serializers import (
     Marc21CatalogueDepositSerializer,
     Marc21CatalogueUIJSONSerializer,
@@ -106,10 +109,12 @@ def record_detail(
     if record is not None and emitter is not None:
         emitter(current_app, record=record._record, via_api=False)
 
-    root = calculate_root(record._record.catalogue["root"])
-    parent = calculate_parent(record._record.catalogue["parent"])
+    _record = cast(Marc21CatalogueRecord, record._record)
 
-    children = record._record.children
+    root = calculate_root(_record.catalogue["root"])
+    parent = calculate_parent(_record.catalogue["parent"])
+
+    children = _record.children
     serializer = Marc21CatalogueUIJSONSerializer()
     record_ui = serializer.dump_obj(record.to_dict())
 
@@ -133,7 +138,7 @@ def record_detail(
         parent=parent,
         root=root,
         is_preview=is_preview,
-        is_draft=record._record.is_draft,
+        is_draft=_record.is_draft,
     )
 
 
