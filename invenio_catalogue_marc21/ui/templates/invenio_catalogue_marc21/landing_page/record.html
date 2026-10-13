@@ -1,5 +1,5 @@
 {#
-  Copyright (C) 2024-2025 Graz University of Technology.
+  Copyright (C) 2024-2026 Graz University of Technology.
 
   invenio-catalogue-marc21 is free software; you can redistribute it and/or
   modify it under the terms of the MIT License; see LICENSE file for more
@@ -21,6 +21,16 @@
 {%- block head_meta %}
   {# to not run this block #}
 {%- endblock head_meta %}
+
+{%- block page_header %}
+    <header>
+        <nav>
+            {%- block navbar_header %}
+                {%- include "invenio_override/navbar.html" %}
+            {%- endblock navbar_header %}
+        </nav>
+    </header>
+{%- endblock page_header %}
 
 {%- block record_files -%}
   <div style="margin-top: 40px;">
