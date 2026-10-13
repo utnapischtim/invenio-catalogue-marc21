@@ -1,5 +1,5 @@
 {#
-  Copyright (C) 2025 Graz University of Technology.
+  Copyright (C) 2025-2026 Graz University of Technology.
 
   invenio-catalogue-marc21 is free software; you can redistribute it and/or
   modify it under the terms of the MIT License; see LICENSE file for more
@@ -7,21 +7,17 @@
 #}
 
 <div class="ui raised card fluid">
-  <div class="header center aligned">
-    <div class="ui hudge header pt-10 pb-10">
-      Root
+    <div class="header center aligned">
+        <div class="ui hudge header pt-10 pb-10">Root</div>
     </div>
-  </div>
-  <div class="content">
-    <div class="ui list">
-      <div class="item">
-        <i class="icon {{ icon }}"></i>
-        <div class="content">
-          <a href="/catalogue/{{ root['pid'] }}">
-            {{ root['title'] }}
-          </a>
-        </div
-      </div>
+    <div class="content">
+        <div class="ui list">
+            <div class="item">
+                <i class="icon {{ icon }}"></i>
+                <div class="content">
+                    <a href="/catalogue/{{ root['pid'] }}">{{ root['title'] }}</a>
+                </div
+            </div>
+        </div>
     </div>
-  </div>
 </div>
