@@ -1,11 +1,8 @@
-/**
- * ESLint 9.x configuration for React JavaScript project
- * Converted from legacy .eslintrc format with modern alternatives
+/*
+ * SPDX-FileCopyrightText: 2024-2026 Graz University of Technology.
+ * SPDX-License-Identifier: MIT
  */
 
-import js from "@eslint/js";
-import jsxA11y from "eslint-plugin-jsx-a11y";
-import prettier from "eslint-plugin-prettier";
 import react from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
 import globals from "globals";

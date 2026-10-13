@@ -1,11 +1,8 @@
-const config = {
-  plugins: ["@ianvs/prettier-plugin-sort-imports"],
-  printWidth: 88, // as in Black for Python
-  tabWidth: 2,
-  useTabs: false,
-  semi: true,
-  singleQuote: false, // as in Black for Python
-  quoteProps: "consistent",
+/*
+ * SPDX-FileCopyrightText: 2024-2026 Graz University of Technology.
+ * SPDX-License-Identifier: MIT
+ */
+
   jsxSingleQuote: false,
   trailingComma: "es5",
   bracketSpacing: true,

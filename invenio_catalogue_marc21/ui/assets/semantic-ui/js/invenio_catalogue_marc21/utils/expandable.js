@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: 2024-2026 Graz University of Technology.
+ * SPDX-License-Identifier: MIT
+ */
+
 import PropTypes from "prop-types";
 import React, { useContext } from "react";
 

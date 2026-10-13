@@ -1,10 +1,5 @@
-# -*- coding: utf-8 -*-
-#
-# Copyright (C) 2024-2026 Graz University of Technology.
-#
-# invenio-catalogue-marc21 is free software; you can redistribute it and/or
-# modify it under the terms of the MIT License; see LICENSE file for more
-# details.
+# SPDX-FileCopyrightText: 2024-2026 Graz University of Technology.
+# SPDX-License-Identifier: MIT
 
 [build-system]
 requires = ["hatchling"]
@@ -118,6 +113,7 @@ testpaths = "tests invenio_catalogue_marc21"
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
+  "CPY001",
   "D203", "D211", "D212", "D213",
   "E501",
   "FA100", "FA102",

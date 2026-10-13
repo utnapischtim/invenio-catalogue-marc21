@@ -1,9 +1,7 @@
-// This file is part of React-Invenio-Deposit
-// Copyright (C) 2025 Graz University of Technology.
-//
-// invenio-catalogue-marc21 is free software; you can redistribute it and/or
-// modify it under the terms of the MIT License; see LICENSE file for more
-// details.
+/*
+ * SPDX-FileCopyrightText: 2025-2026 Graz University of Technology.
+ * SPDX-License-Identifier: MIT
+ */
 
 // list of func used to
 // mark the strings for translation
