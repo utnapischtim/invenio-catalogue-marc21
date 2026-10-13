@@ -32,10 +32,10 @@ urls = { Repository = "https://github.com/tu-graz-library/invenio-catalogue-marc
 
 dependencies = [
     "invenio-alma>=0.1.0",
-    "invenio-base>=2.0.0,<3.0.0",
-    "invenio-i18n>=3.0.0,<4.0.0",
-    "invenio-search[opensearch2]>=3.0.0,<4.0.0",
-    "invenio-records-marc21>=0.28.0,<1.0.0",
+    "invenio-base>=2.0.0",
+    "invenio-i18n>=3.0.0",
+    "invenio-search[opensearch2]>=3.0.0",
+    "invenio-records-marc21>=0.28.0",
     "faker>=9.0.0",
     "faker-file[pdf]>0.17.0",
     "reportlab>=4.0.0",
