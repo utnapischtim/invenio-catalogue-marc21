@@ -87,13 +87,14 @@ path = "invenio_catalogue_marc21/__init__.py"
 [tool.hatch.build]
 exclude = [
   ".github/**",
-  ".tx/config",
   "tests/**",
-  ".editorconfig",
   ".gitignore",
   "eslint.config.js",
   "run-tests.sh",
 ]
+
+[tool.hatch.build.targets.sdist]
+include = ["/invenio_catalogue_marc21"]
 
 [tool.isort]
 profile = "black"
