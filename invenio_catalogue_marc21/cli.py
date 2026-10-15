@@ -8,24 +8,9 @@ from functools import wraps
 
 import click
 from flask.cli import with_appcontext
-from invenio_accounts.models import User
-from invenio_accounts.proxies import current_datastore
-from invenio_db import db
 
 from .fixtures.demo import create_fake_catalogue_record
 from .fixtures.tasks import create_catalogue_marc21_record
-
-
-def get_user(user_email: str) -> User:
-    """Get user."""
-    with db.session.no_autoflush:
-        user = current_datastore.get_user_by_email(user_email)
-
-    if not user:
-        msg = f"NO user found for email: {user_email}"
-        raise RuntimeError(msg)
-
-    return user
 
 
 def wrap_messages(before: str, after: str) -> Callable:
@@ -56,13 +41,6 @@ def catalogue() -> None:
 @catalogue.command("demo")
 @with_appcontext
 @click.option(
-    "-u",
-    "--user-email",
-    default="user@demo.org",
-    show_default=True,
-    help="User e-mail of an existing user.",
-)
-@click.option(
     "--number",
     "-n",
     "n_records",
@@ -92,18 +70,15 @@ def catalogue() -> None:
     after="Created records!",
 )
 def demo(
-    user_email: str,
     n_records: int,
     n_chapters: int,
     *,
     disable_files: bool,
 ) -> None:
     """Create number of fake records for demo purposes."""
-    user = get_user(user_email)
-
     for _ in range(n_records):
         data, data_chapters, data_access = create_fake_catalogue_record(
             n_chapters,
             files=not disable_files,
         )
-        create_catalogue_marc21_record.delay(user.id, data, data_chapters, data_access)
+        create_catalogue_marc21_record.delay(data, data_chapters, data_access)

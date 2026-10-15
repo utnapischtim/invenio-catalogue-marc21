@@ -7,28 +7,12 @@ from copy import deepcopy
 from pathlib import Path
 
 from celery import shared_task
-from flask_principal import Identity, RoleNeed, UserNeed
-from invenio_access.permissions import (
-    any_user,
-    authenticated_user,
-    system_identity,
-    system_user_id,
-)
+from flask_principal import Identity
+from invenio_access.permissions import system_identity
 from invenio_records_resources.services.files import FileService
 
 from ..proxies import current_catalogue_marc21
 from .demo import create_fake_file
-
-
-def get_user_identity(user_id: str) -> Identity:
-    """Get user identity."""
-    identity = Identity(user_id)
-    # TODO: we need to get the user roles for specific user groups and add to the identity
-    identity.provides.add(any_user)
-    identity.provides.add(UserNeed(user_id))
-    identity.provides.add(authenticated_user)
-    identity.provides.add(RoleNeed("Marc21Manager"))
-    return identity
 
 
 def add_file_to_record(
@@ -54,17 +38,12 @@ def add_file_to_record(
 
 @shared_task
 def create_catalogue_marc21_record(
-    user_id: str,
     data: dict,
     data_chapters: list,
     access: dict,
 ) -> None:
     """Create records for demo purposes."""
-    if user_id == system_user_id:
-        identity = system_identity
-    else:
-        identity = get_user_identity(user_id)
-
+    identity = system_identity
     service = current_catalogue_marc21.records_service
     data_root = deepcopy(data)
     data_root["catalogue"] = {
